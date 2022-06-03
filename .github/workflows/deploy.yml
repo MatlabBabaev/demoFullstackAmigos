@@ -1,5 +1,4 @@
 name: CICD
-
 on:
   push:
     branches: [ main ]
@@ -15,9 +14,9 @@ env:
   # Java
   JAVA_VERSION: 1.15
   # DockerHub
-  DOCKER_HUB_USERNAME: amigoscode
+  DOCKER_HUB_USERNAME: matlabbabaev
   # AWS & Elastic Bean Stalk
-  AWS_REGION: eu-west-1
+  AWS_REGION: ap-southeast-2
   EB_ENVIRONMENT_NAME: Springbootreactfullstack-env
   EB_APPLICATION_NAME: springboot-react-fullstack
   EB_DEPLOYMENT_PACKAGE: elasticbeanstalk/docker-compose.yml
@@ -63,7 +62,8 @@ jobs:
 
       - name: Maven Clean Package and Push to Dockerhub
         run: |
-          mvn --no-transfer-progress clean package \
+          chmod +x mvnw
+          ./mvnw --no-transfer-progress clean package \
             -P build-frontend \
             -P jib-push-to-dockerhub \
               -Dapp.image.tag=${{steps.build-number.outputs.BUILD_NUMBER}}
@@ -109,7 +109,8 @@ jobs:
         with:
           status: ${{ job.status }}
           fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
-          text: ':tada: :arrow_right: http://springbootreactfullstack-env.eba-3imjbkem.eu-west-1.elasticbeanstalk.com'
+          text: ':tada: :arrow_right: Springbootreactfullstack-env.eba-cn2z9mcm.ap-southeast-2.elasticbeanstalk.com'
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         if: always()
+
